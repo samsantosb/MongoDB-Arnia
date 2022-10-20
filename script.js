@@ -2,11 +2,18 @@
 //https://www.npmjs.com/package/dotenv -> para armazenar dados sensíveis
 const { MongoClient } = require('mongodb'); // -> se conectar no DB
 require('dotenv').config(); // -> ler os arquivos .env
+const { Repository } = require('./repositories/repositories'); // -> importar a classe Repository
+
 
 const mongoUrl = process.env.MONGO; //definimos a string/key de conexão -> aqui a gente configura
 const client = new MongoClient(mongoUrl) //instanciamos o cliente -> aqui a gente configura
 
+const database = client.db('test').collection('pokemons') //definimos qual é o banco de dados -> aqui a gente configura
+//não existe repositorio sem a constante a cima
 
+const repository = new Repository(database);
+//Injeção de dependencia -> passar o parâmetro para a classe que depende dele
+//instanciamos o repositorio -> aqui a gente configuramos
 
 async function script() {
     try {
@@ -16,57 +23,41 @@ async function script() {
         console.log('erro ao conectar no DB', error);
     }
 
-    const db = client.db('test') //definimos qual é o banco de dados -> aqui a gente configura
-    const collection = db.collection('pokemons') //definimos a collection -> aqui a gente configura
+    // const allPokemons = await repository.getAll()
+    // console.log('Todos os pokemons', allPokemons);
 
-    // const pikachu = await collection.insertOne({ name: 'Pikachu', type: 'eletric' }) //aqui a gente acessa
+    // const pokemon = await repository.getById('6351d6b1b548c78ca7761d41')
+    // console.log('Pokemon', pokemon);
 
-    // console.log(pikachu, 'Pikachu inserido com sucesso')
+    // const pokemonByName = await repository.getByName('Pikachu')
+    // console.log(pokemonByName);
 
-    // const pokemons = [
-    //     { name: 'Bulbasaur', type: 'grass' },
-    //     { name: 'Charmander', type: 'fire' },
-    //     { name: 'Squirtle', type: 'water' },
-    //     { name: 'Caterpie', type: 'bug' },
-    //     { name: 'Weedle', type: 'bug' },
-    //     { name: 'Pidgey', type: 'normal' },
-    //     { name: 'Rattata', type: 'normal' },
-    //     { name: 'Spearow', type: 'normal' },
-    //     { name: 'Ekans', type: 'poison' },
-    // ]
+    // const createGolduck = await repository.create({
+    //     name: 'Golduck',
+    //     type: 'Water',
+    //     level: 100
+    // })
+
+    // console.log(`Pokemon criado com sucesso ${createGolduck.insertedId}`);
+
+    // const updateGolduck = await repository.update('6351d6b1b548c78ca7761d41', {
+    //     name: 'Golduck',
+    //     type: 'Psychic and Water',
+    //     level: 100,
+    //     nickName: 'gold'
+    // })
+
+    // console.log('Golduck atualizado', updateGolduck);
+
+    // const deleteGolduck = await repository.delete('6351d6b1b548c78ca7761d41')
+    // console.log('Golduck deletado', deleteGolduck);
 
     // try {
-    //     await collection.insertMany(pokemons) //insere vários pokemons de uma vez
-    //     console.log('Pokemons inseridos com sucesso')
+    //     await repository.deleteAll();
+    //     console.log('Todos os pokemons deletados');
     // } catch (error) {
-    //     console.log('erro ao inserir pokemons', error);
+    //     console.log('erro ao deletar todos os pokemons', error);
     // }
-
-    //delete ekans please, i hate ekans
-    //const ekans = await collection.deleteOne({ name: 'Ekans' })
-    //log ekans
-    //console.log(ekans, 'Ekans deletado com sucesso')
-
-    //find bulbasaur
-    //const bulbasaur = await collection.findOne({ name: 'Bulbasaur' })
-
-    //log bulbasaur
-    //console.log(bulbasaur, 'Bulbasaur encontrado com sucesso')
-
-    //find all pokemons
-    const allPokemons = await collection.find({}).toArray()
-
-    for (const pokemon of allPokemons) {
-        pokemon.level = Math.floor(Math.random() * 100)
-
-        try {
-            await collection.updateOne({ _id: pokemon._id }, { $set: { level: pokemon.level } })
-            console.log(`${pokemon.name} atualizado com sucesso`)
-        }
-        catch (error) {
-            console.log(`erro ao atualizar ${pokemon.name}`, error);
-        }
-    }
 
     try {
         await client.close();
@@ -75,4 +66,5 @@ async function script() {
         console.log('erro ao fechar conexão', error);
     }
 }
+
 script();
