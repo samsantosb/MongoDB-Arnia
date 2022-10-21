@@ -11,24 +11,63 @@ class Repository {
     }
     async getAll() {
         /*busca todos os pokemons e converte eles pra array no formato javascript*/
-        const pokemons = await this.database.find().toArray();
+        const pokemons = await this.database.find({}).toArray();
+
+        if (!pokemons) {
+            return [];
+        }
+
         return pokemons;
     }
     async getById(id) {
         /*busca um pokemon pelo id e converte ele para um objeto*/
         const pokemon = await this.database.find({ _id: new ObjectId(id) }).toArray();
+
+        if (!pokemon) {
+            return [];
+        }
+
         return pokemon;
     }
     async getByName(name) {
         /*busca um pokemon pelo nome e converte ele para um objeto*/
         const pokemon = await this.database.find({ name: name }).toArray();
+
+        if (!pokemon) {
+            return [];
+        }
+
         return pokemon;
     }
+
+    async getOnlyEletricPokemons() {
+        /*Busca pokemons cujo tipo seja eletrico*/
+        const pokemon = await this.database.find({ type: "Eletric" }).toArray();
+        return pokemon;
+    }
+
     async create(pokemon) {
         /*cria um pokemon*/
         const result = await this.database.insertOne(pokemon);
+
+        if (!result) {
+            return [];
+        }
+
         return result;
     }
+
+    async createMany(pokemons) {
+        /*cria varios pokemons*/
+        const result = await this.database.insertMany(pokemons);
+
+        if (!result) {
+            return [];
+        }
+
+        return result;
+    }
+
     async update(id, pokemon) {
         /*atualiza um pokemon*/
         const result = await this.database.updateOne({ _id: new ObjectId(id) }, { $set: pokemon });
@@ -41,11 +80,21 @@ class Repository {
         //ele adiciona eles no banco de dados
         //e se vierem atributos com novos valores ???
         //ele atualiza eles no banco de dados
+
+        if (!result) {
+            return [];
+        }
+
         return result;
     }
     async delete(id) {
         /*deleta um pokemon*/
         const result = await this.database.deleteOne({ _id: new ObjectId(id) });
+
+        if (!result) {
+            return [];
+        }
+
         return result;
     }
 
@@ -53,9 +102,16 @@ class Repository {
         /*deleta todos os pokemons*/
         //Nunca use mais saiba que existe
         const result = await this.database.deleteMany();
+
+        if (!result) {
+            return [];
+        }
+
         return result;
     }
 }
+
+
 
 module.exports = { Repository };
 
