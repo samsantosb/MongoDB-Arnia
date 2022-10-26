@@ -25,8 +25,8 @@ async function script() {
         console.log('erro ao conectar no DB', error);
     }
 
-    // const pokemons = await service.getAll();
-    // console.log(pokemons);
+    const pokemons = await service.getAll();
+    console.log(pokemons);
 
     // const pokemonsArray = [
     //     {
@@ -58,7 +58,7 @@ async function script() {
     //console.log(await service.getTheNameOfThePokemons());
     // console.log(await service.returnTheStrongestAttacker())
 
-    console.log(await service.getOnlyEletricPokemons())
+    // console.log(await service.getOnlyEletricPokemons())
 
     try {
         await client.close();

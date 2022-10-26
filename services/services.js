@@ -2,12 +2,13 @@ class Service {
     constructor(repository) {
         this.repository = repository;
     }
+
     async getAll() {
         try {
             const pokemons = await this.repository.getAll();
             return pokemons;
         } catch (error) {
-            return `Erro ao buscar todos os pokemons ${error}`;
+            return `Erro ao buscar todos os pokemons - mensagem do Mongo${error}`;
         }
     }
 
@@ -23,17 +24,16 @@ class Service {
             return pokemons.map(pokemon => pokemon.name);
         }
         catch (error) {
-            return `Erro ao buscar todos os pokemons ${error}`;
+            return `Erro ao buscar todos os pokemons - mensagem do Mongo${error}`;
         }
     }
-
 
     async getById(id) {
         try {
             const pokemon = await this.repository.getById(id);
             return pokemon;
         } catch (error) {
-            return `Erro ao buscar o pokemon ${error}`;
+            return `Erro ao buscar todos os pokemons - mensagem do Mongo${error}`;
         }
     }
 
@@ -42,7 +42,7 @@ class Service {
             const pokemon = await this.repository.getByName(name);
             return pokemon;
         } catch (error) {
-            return `Erro ao buscar o pokemon ${error}`;
+            return `Erro ao buscar todos os pokemons - mensagem do Mongo${error}`;
         }
     }
 
@@ -56,7 +56,7 @@ class Service {
             return sortPokemonsByStrongestAttack[0]
         }
         catch (error) {
-            return `Erro ao buscar o pokemon ${error}`;
+            return `Erro ao buscar todos os pokemons - mensagem do Mongo${error}`;
         }
     }
 
@@ -67,7 +67,7 @@ class Service {
             return onlyEletricPokemons
         }
         catch (error) {
-            return `Erro ao buscar o pokemon ${error}`;
+            return `Erro ao buscar todos os pokemons - mensagem do Mongo${error}`;
         }
     }
 
@@ -76,7 +76,7 @@ class Service {
             const result = await this.repository.create(pokemon);
             return result;
         } catch (error) {
-            return `Erro ao criar o pokemon ${error}`;
+            return `Erro ao buscar todos os pokemons - mensagem do Mongo${error}`;
         }
     }
 
@@ -85,7 +85,7 @@ class Service {
             const result = await this.repository.createMany(pokemons);
             return result;
         } catch (error) {
-            return `Erro ao criar os pokemons ${error}`;
+            return `Erro ao buscar todos os pokemons - mensagem do Mongo${error}`;
         }
     }
 
@@ -94,7 +94,7 @@ class Service {
             const result = await this.repository.update(id, pokemon);
             return result;
         } catch (error) {
-            return `Erro ao atualizar o pokemon ${error}`;
+            return `Erro ao buscar todos os pokemons - mensagem do Mongo${error}`;
         }
     }
 
@@ -103,7 +103,7 @@ class Service {
             const result = await this.repository.delete(id);
             return result;
         } catch (error) {
-            return `Erro ao deletar o pokemon ${error}`;
+            return `Erro ao buscar todos os pokemons - mensagem do Mongo${error}`;
         }
     }
 
@@ -112,7 +112,7 @@ class Service {
             const result = await this.repository.deleteAll();
             return result;
         } catch (error) {
-            return `Erro ao deletar todos os pokemons ${error}`;
+            return `Erro ao buscar todos os pokemons - mensagem do Mongo${error}`;
         }
     }
 }
